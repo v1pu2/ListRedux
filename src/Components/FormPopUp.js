@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import {setData} from '../Actions/GetData';
+import {setData} from '../Actions/ActionFile';
 import { View, StyleSheet, Text, Dimensions, ScrollView } from "react-native";
 import { Button, Overlay } from "react-native-elements";
 import Input from "./TextInput";
@@ -132,6 +132,8 @@ const FormPopup = (props) => {
 
   const onClickSubmit = () => {
     console.log("submit click", name, email, phone);
+    const data={name,email,phone};
+    props.setData(data);
     setVisible(false);
   };
 
@@ -212,8 +214,9 @@ const FormPopup = (props) => {
 
 // export default FormPopup;
 const mapStateToProps = state => {
+    console.log('state in form',state)
   return {
-    userData: state.rootReducer.userData,
+    userData: state.apiReducer.data,
   };
 };
 

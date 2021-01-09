@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Component } from "react";
-
+import { connect } from "react-redux";
+import {getData} from '../Actions/ActionFile';
 import {
   SafeAreaView,
   StyleSheet,
@@ -56,7 +57,18 @@ const Home = () => {
   );
 };
 
-export default Home;
+// export default Home;
+const mapStateToProps = state => {
+    console.log('state in form',state)
+  return {
+    userData: state.apiReducer.data,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  {getData},
+)(Home);
 
 const styles = StyleSheet.create({
   container: {
