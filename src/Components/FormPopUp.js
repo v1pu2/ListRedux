@@ -70,12 +70,16 @@ const styles = StyleSheet.create({
 });
 
 const FormPopup = (props) => {
-  const { visible, setVisible, hardware } = props;
-
+  const { visible, setVisible, hardware, selectedItem } = props;
+  console.log("selecteditem in form", selectedItem);
   const [userData, setUserData] = useState([]);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [name, setName] = useState((selectedItem && selectedItem.name) || "");
+  const [email, setEmail] = useState(
+    (selectedItem && selectedItem.email) || ""
+  );
+  const [phone, setPhone] = useState(
+    (selectedItem && selectedItem.phone) || ""
+  );
   const [isValidate, setIsValidate] = useState(false);
   const [errorEmail, setErrorEmail] = useState("");
   const [isPhone, setIsPhone] = useState(false);
@@ -140,14 +144,31 @@ const FormPopup = (props) => {
     const id = index;
     const data = { id, name, email, phone };
     if (userData.length === 0) {
+        console.log('length 00000')
       userData.push(data);
       props.setData(userData);
       setIndex(index + 1);
       setVisible(false);
     } else {
+        console.log('selected item inelse partttttt',selectedItem)
       var index = userData.findIndex((x) => x.email === email);
-      if (index === 0) {
+      if (index === 0 && selectedItem && selectedItem.email === null) {
+          console.log('in first iff alreday exist')
         setErrorEmail("Email already exists");
+      } else if (index === 0 && selectedItem && selectedItem.email !== null) {
+        console.log("in else if");
+        const sel_email=selectedItem && selectedItem.email;
+        for (var i in userData) {
+            if (userData[i].email === sel_email) {
+               userData[i].email = email;
+               userData[i].name=name;
+               userData[i].phone=phone;
+               break; //Stop this loop, we found it!
+            }
+          }
+          props.setData(userData);
+          setIndex(index + 1);
+          setVisible(false);
       } else {
         userData.push(data);
         props.setData(userData);
