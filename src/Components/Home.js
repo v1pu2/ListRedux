@@ -8,22 +8,25 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
+import FormPopup from './FormPopUp';
 
 const Home = () => {
     const [userData,setUserData]=useState({});
-    const[name, setName]=useState("");
-    const [email,setEmail]=useState("");
-    const[phone,setPhone]=useState("");
     const[visible,setVisible]=useState(false);
-    
+
 
 
   const clickHandler = () => {
-    alert('Floating Button Clicked');
+    // alert('Floating Button Clicked');
+    setVisible(true)
   };
-
+  const outsideBack = () => {
+    // close knowledge center detail popup on click of hardware back key
+    setVisible(false);
+  };
   return (
-    <SafeAreaView style={styles.container}>
+    // <SafeAreaView style={styles.container}>
+    <>
       <View style={styles.container}>
         <Text style={styles.titleStyle}>
         User List
@@ -41,7 +44,15 @@ const Home = () => {
           />
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+      {visible && (
+        <FormPopup
+          visible={visible}
+          setVisible={setVisible}
+          hardware={outsideBack}
+        />
+      )}
+      </>
+    /* </SafeAreaView> */
   );
 };
 
