@@ -97,7 +97,6 @@ const Home = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  console.log("state in home", state.apiReducer);
   return {
     userList: state.apiReducer.user,
   };

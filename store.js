@@ -1,12 +1,11 @@
 import {createStore, applyMiddleware, compose, combineReducers} from 'redux';
 import thunk from 'redux-thunk';
 import {createLogger} from 'redux-logger';
-import apiReducer from './src/Reducers/RootReducer';
+import apiReducer from './src/Reducers/ApiReducer';
 
 const appReducers = combineReducers({
     apiReducer,
 });
-console.log('in store call')
 const rootReducer = (state, action) => appReducers(state, action);
 
 const logger = createLogger();

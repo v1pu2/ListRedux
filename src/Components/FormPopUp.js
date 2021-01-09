@@ -247,10 +247,7 @@ const FormPopup = (props) => {
     </Overlay>
   );
 };
-
-// export default FormPopup;
 const mapStateToProps = (state) => {
-  console.log("state in form", state.apiReducer.user);
   return {
     users: state.apiReducer.user,
   };
