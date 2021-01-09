@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import {setData} from '../Actions/ActionFile';
+import { setData } from "../Actions/ActionFile";
 import { View, StyleSheet, Text, Dimensions, ScrollView } from "react-native";
 import { Button, Overlay } from "react-native-elements";
 import Input from "./TextInput";
@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
 const FormPopup = (props) => {
   const { visible, setVisible, hardware } = props;
 
+  const [userData, setUserData] = useState([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -79,6 +80,11 @@ const FormPopup = (props) => {
   const [errorEmail, setErrorEmail] = useState("");
   const [isPhone, setIsPhone] = useState(false);
   const [errorPhone, setErrorPhone] = useState("");
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    props && props.users && props.users.length > 0 && setUserData(props.users);
+  }, [props.users]);
 
   const validateEmail = () => {
     const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$/;
@@ -131,10 +137,24 @@ const FormPopup = (props) => {
   };
 
   const onClickSubmit = () => {
-    console.log("submit click", name, email, phone);
-    const data={name,email,phone};
-    props.setData(data);
-    setVisible(false);
+    const id = index;
+    const data = { id, name, email, phone };
+    if (userData.length === 0) {
+      userData.push(data);
+      props.setData(userData);
+      setIndex(index + 1);
+      setVisible(false);
+    } else {
+      var index = userData.findIndex((x) => x.email === email);
+      if (index === 0) {
+        setErrorEmail("Email already exists");
+      } else {
+        userData.push(data);
+        props.setData(userData);
+        setIndex(index + 1);
+        setVisible(false);
+      }
+    }
   };
 
   const disabled = !!(
@@ -213,14 +233,11 @@ const FormPopup = (props) => {
 };
 
 // export default FormPopup;
-const mapStateToProps = state => {
-    console.log('state in form',state)
+const mapStateToProps = (state) => {
+  console.log("state in form", state.apiReducer.user);
   return {
-    userData: state.apiReducer.data,
+    users: state.apiReducer.user,
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {setData},
-)(FormPopup);
+export default connect(mapStateToProps, { setData })(FormPopup);

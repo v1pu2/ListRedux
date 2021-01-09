@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Component } from "react";
 import { connect } from "react-redux";
-import {getData} from '../Actions/ActionFile';
+import { getData } from "../Actions/ActionFile";
 import {
   SafeAreaView,
   StyleSheet,
@@ -8,38 +8,60 @@ import {
   Image,
   TouchableOpacity,
   Text,
-} from 'react-native';
-import FormPopup from './FormPopUp';
+  FlatList,
+} from "react-native";
+import FormPopup from "./FormPopUp";
 
-const Home = () => {
-    const [userData,setUserData]=useState({});
-    const[visible,setVisible]=useState(false);
+const Home = (props) => {
+  const [userData, setUserData] = useState([]);
+  const [visible, setVisible] = useState(false);
 
+  useEffect(() => {
+    props.getData();
+  }, []);
 
+  useEffect(() => {
+  props && props.userList && setUserData(props.userList)
+  }, [props.userList]);
 
   const clickHandler = () => {
-    // alert('Floating Button Clicked');
-    setVisible(true)
+    setVisible(true);
   };
   const outsideBack = () => {
-    // close knowledge center detail popup on click of hardware back key
     setVisible(false);
   };
+ 
+  const renderItem = (item) => {
+    console.log("item in renderitem", item);
+    return (
+      <View style={styles.itemView}>
+        <Text>Name:{item && item.item.name}</Text>
+        <Text>Email:{item && item.item.email}</Text>
+        <Text>Phone:{item && item.item.phone}</Text>
+      </View>
+    );
+  };
+  console.log('userdata in home',userData)
   return (
-    // <SafeAreaView style={styles.container}>
     <>
       <View style={styles.container}>
-        <Text style={styles.titleStyle}>
-        User List
-        </Text>
+        <Text style={styles.titleStyle}>User List</Text>
+        {userData.length > 0 && (
+          <FlatList
+            data={userData}
+            renderItem={(item) => renderItem(item)}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        )}
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={clickHandler}
-          style={styles.touchableOpacityStyle}>
+          style={styles.touchableOpacityStyle}
+        >
           <Image
             source={{
               uri:
-                'https://raw.githubusercontent.com/AboutReact/sampleresource/master/plus_icon.png',
+                "https://raw.githubusercontent.com/AboutReact/sampleresource/master/plus_icon.png",
             }}
             style={styles.floatingButtonStyle}
           />
@@ -52,54 +74,50 @@ const Home = () => {
           hardware={outsideBack}
         />
       )}
-      </>
-    /* </SafeAreaView> */
+    </>
   );
 };
 
-// export default Home;
-const mapStateToProps = state => {
-    console.log('state in form',state)
+const mapStateToProps = (state) => {
+  console.log("state in home", state.apiReducer);
   return {
-    userData: state.apiReducer.data,
+    userList: state.apiReducer.user,
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {getData},
-)(Home);
+export default connect(mapStateToProps, { getData })(Home);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     padding: 10,
   },
   titleStyle: {
     fontSize: 28,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
     padding: 10,
   },
   textStyle: {
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: "center",
     padding: 10,
   },
   touchableOpacityStyle: {
-    position: 'absolute',
+    position: "absolute",
     width: 50,
     height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     right: 30,
     bottom: 30,
   },
   floatingButtonStyle: {
-    resizeMode: 'contain',
+    resizeMode: "contain",
     width: 50,
     height: 50,
     //backgroundColor:'black'
   },
+  itemView: { padding: 10, borderWidth: 1, margin: 5 },
 });

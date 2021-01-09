@@ -6,14 +6,12 @@ const initialState = {
 };
 
 const apiReducer = (state = initialState, action) => {
-    console.log('in reducer', action.payload)
   switch (action.type) {
 
     case GET_DATA:
-        console.log('in getdata',state)
       return {
         ...state,
-        data:[...state.data, action.payload],
+        data:action.payload && action.payload.user,
       };
     case SET_DATA:
       return {
