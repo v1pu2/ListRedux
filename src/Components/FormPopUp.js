@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
 
 const FormPopup = (props) => {
   const { visible, setVisible, hardware, selectedItem } = props;
-  //   console.log("selecteditem in form", selectedItem);
+
   const [userData, setUserData] = useState([]);
   const [name, setName] = useState((selectedItem && selectedItem.name) || "");
   const [email, setEmail] = useState(
@@ -109,7 +109,6 @@ const FormPopup = (props) => {
       } else {
         setErrorEmail("");
         setEmail(email);
-        // disabled
       }
     } else {
       setEmail(email);
@@ -152,9 +151,8 @@ const FormPopup = (props) => {
       arrangeUserData(data);
     } else {
       var index = userData.findIndex((x) => x.email === email);
-      //   if (index === 0 && selectedItem && selectedItem.email === null) {
+
       if (selectedItem && selectedItem.email !== null) {
-        console.log("in fist ifffff inside else");
         const sel_email = selectedItem && selectedItem.email;
         for (var i in userData) {
           if (userData[i].email === sel_email) {
@@ -167,10 +165,8 @@ const FormPopup = (props) => {
         props.setData(userData);
         setVisible(false);
       } else if (selectedItem && selectedItem.email === null && index === 0) {
-        console.log("in first iff alreday exist");
         setErrorEmail("Email already exists");
       } else {
-        console.log("in else if");
         arrangeUserData(data);
       }
     }
@@ -182,6 +178,7 @@ const FormPopup = (props) => {
     !email ||
     !email.trim() ||
     errorEmail ||
+    phone.length < 10 ||
     errorPhone
   );
 
