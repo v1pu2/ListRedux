@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
 
 const FormPopup = (props) => {
   const { visible, setVisible, hardware, selectedItem } = props;
-  console.log("selecteditem in form", selectedItem);
+  //   console.log("selecteditem in form", selectedItem);
   const [userData, setUserData] = useState([]);
   const [name, setName] = useState((selectedItem && selectedItem.name) || "");
   const [email, setEmail] = useState(
@@ -139,41 +139,39 @@ const FormPopup = (props) => {
       setErrorPhone("");
     }
   };
-
+  const arrangeUserData = (data) => {
+    userData.push(data);
+    props.setData(userData);
+    setIndex(index + 1);
+    setVisible(false);
+  };
   const onClickSubmit = () => {
     const id = index;
     const data = { id, name, email, phone };
     if (userData.length === 0) {
-        console.log('length 00000')
-      userData.push(data);
-      props.setData(userData);
-      setIndex(index + 1);
-      setVisible(false);
+      arrangeUserData(data);
     } else {
-        console.log('selected item inelse partttttt',selectedItem)
       var index = userData.findIndex((x) => x.email === email);
-      if (index === 0 && selectedItem && selectedItem.email === null) {
-          console.log('in first iff alreday exist')
-        setErrorEmail("Email already exists");
-      } else if (index === 0 && selectedItem && selectedItem.email !== null) {
-        console.log("in else if");
-        const sel_email=selectedItem && selectedItem.email;
+      //   if (index === 0 && selectedItem && selectedItem.email === null) {
+      if (selectedItem && selectedItem.email !== null) {
+        console.log("in fist ifffff inside else");
+        const sel_email = selectedItem && selectedItem.email;
         for (var i in userData) {
-            if (userData[i].email === sel_email) {
-               userData[i].email = email;
-               userData[i].name=name;
-               userData[i].phone=phone;
-               break; //Stop this loop, we found it!
-            }
+          if (userData[i].email === sel_email) {
+            userData[i].email = email;
+            userData[i].name = name;
+            userData[i].phone = phone;
+            break; //Stop this loop, we found it!
           }
-          props.setData(userData);
-          setIndex(index + 1);
-          setVisible(false);
-      } else {
-        userData.push(data);
+        }
         props.setData(userData);
-        setIndex(index + 1);
         setVisible(false);
+      } else if (selectedItem && selectedItem.email === null && index === 0) {
+        console.log("in first iff alreday exist");
+        setErrorEmail("Email already exists");
+      } else {
+        console.log("in else if");
+        arrangeUserData(data);
       }
     }
   };
