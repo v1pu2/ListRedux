@@ -18,9 +18,9 @@ const Home = (props) => {
   const [visible, setVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
 
-  useEffect(() => {
-    props.getData();
-  }, []);
+//   useEffect(() => {
+//     props.getData();
+//   }, []);
 
   useEffect(() => {
     props && props.userList && setUserData(props.userList);
@@ -53,7 +53,7 @@ const Home = (props) => {
               setVisible(true);
             }}
           />
-          {/* <Text>edit</Text> */}
+          
         </View>
       </View>
     );
@@ -102,7 +102,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { getData })(Home);
+export default connect(mapStateToProps)(Home);
 
 const styles = StyleSheet.create({
   container: {

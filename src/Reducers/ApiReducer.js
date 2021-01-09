@@ -1,18 +1,11 @@
-import {SET_DATA, GET_DATA, } from '../Actions/Types';
+import {SET_DATA, } from '../Actions/Types';
 
 const initialState = {
-  data: [],
-  user:{},
+  user:[],
 };
 
 const apiReducer = (state = initialState, action) => {
   switch (action.type) {
-
-    case GET_DATA:
-      return {
-        ...state,
-        data:action.payload && action.payload.user,
-      };
     case SET_DATA:
       return {
         ...state,

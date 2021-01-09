@@ -7,9 +7,3 @@ export const setData = (data) => (dispatch) => {
   });
 };
 
-export const getData = () => (dispatch) => {
-  dispatch({
-    type: GET_DATA,
-    //   payload: data,
-  });
-};
