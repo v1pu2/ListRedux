@@ -27,6 +27,7 @@ const Home = (props) => {
   }, [props.userList]);
 
   const clickHandler = () => {
+      setSelectedItem("")
     setVisible(true);
   };
   const outsideBack = () => {
