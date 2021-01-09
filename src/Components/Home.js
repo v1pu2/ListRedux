@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Component } from "react";
 import { connect } from "react-redux";
 import { getData } from "../Actions/ActionFile";
+import { Icon } from "react-native-elements";
 import {
   SafeAreaView,
   StyleSheet,
@@ -15,13 +16,14 @@ import FormPopup from "./FormPopUp";
 const Home = (props) => {
   const [userData, setUserData] = useState([]);
   const [visible, setVisible] = useState(false);
+  const [selectedItem, setSelectedItem] = useState("");
 
   useEffect(() => {
     props.getData();
   }, []);
 
   useEffect(() => {
-  props && props.userList && setUserData(props.userList)
+    props && props.userList && setUserData(props.userList);
   }, [props.userList]);
 
   const clickHandler = () => {
@@ -30,18 +32,32 @@ const Home = (props) => {
   const outsideBack = () => {
     setVisible(false);
   };
- 
+
   const renderItem = (item) => {
-    console.log("item in renderitem", item);
     return (
       <View style={styles.itemView}>
-        <Text>Name:{item && item.item.name}</Text>
-        <Text>Email:{item && item.item.email}</Text>
-        <Text>Phone:{item && item.item.phone}</Text>
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <View>
+            <Text>Name:{item && item.item.name}</Text>
+            <Text>Email:{item && item.item.email}</Text>
+            <Text>Phone:{item && item.item.phone}</Text>
+          </View>
+
+          <Icon
+            name='edit'
+            color='black'
+            size={20}
+            onPress={() => {
+              setSelectedItem(item && item.item);
+              setVisible(true);
+            }}
+          />
+          {/* <Text>edit</Text> */}
+        </View>
       </View>
     );
   };
-  console.log('userdata in home',userData)
+
   return (
     <>
       <View style={styles.container}>
@@ -72,6 +88,7 @@ const Home = (props) => {
           visible={visible}
           setVisible={setVisible}
           hardware={outsideBack}
+          selectedItem={selectedItem}
         />
       )}
     </>
