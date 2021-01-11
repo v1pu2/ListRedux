@@ -1,4 +1,4 @@
-import { SET_DATA, GET_DATA } from "./Types";
+import {SET_DATA, GET_DATA, UPDATE_DATA} from './Types';
 
 export const setData = (data) => (dispatch) => {
   dispatch({
@@ -7,3 +7,9 @@ export const setData = (data) => (dispatch) => {
   });
 };
 
+export const updateData = (data) => (dispatch) => {
+  dispatch({
+    type: UPDATE_DATA,
+    payload: data,
+  });
+};
